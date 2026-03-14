@@ -7,14 +7,14 @@ pkgs.buildNpmPackage rec {
   src = pkgs.fetchFromGitHub {
     owner = "kamranahmedse";
     repo = "claude-statusline";
-    rev = "v${version}"; # Assuming a tag exists, otherwise use commit hash or 'main'
+    rev = "main"; # Assuming a tag exists, otherwise use commit hash or 'main'
     # Set to "" initially, Nix will tell you the correct hash on first build failure.
-    sha256 = "";
+    sha256 = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   };
 
   # npmDepsHash is crucial for reproducible Node.js builds.
   # Set to "" initially, Nix will tell you the correct hash on first build failure.
-  npmDepsHash = "";
+  npmDepsHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
 
   # Ensure Node.js and other necessary tools are available
   nativeBuildInputs = [
