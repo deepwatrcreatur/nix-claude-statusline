@@ -3,9 +3,11 @@
 Packages the `claude-statusline` CLI.
 
 - Package: `pkgs/default.nix` (pinned `rev` and `hash`); exposed by `flake.nix`.
-- Build and try it: `nix build`, then run `result/bin/claude-statusline`.
-- Manual update: bump `version`, set the changed hash to `lib.fakeHash`,
-  build, and copy the hash Nix reports. Update `rev` with `version`.
+- Build and try it: `nix build`, then
+  `echo '{}' | result/bin/claude-statusline` (it reads Claude Code's JSON
+  status from stdin and waits for EOF).
+- Manual update: change `rev` and `version` first, then set `hash` to
+  `lib.fakeHash`, build, and copy the hash Nix reports.
 
 <!-- nix-agent-guides:core BEGIN (v3). Synced from deepwatrcreatur/nix-agent-guides templates/agents-core.md by scripts/sync-agents-core.sh. Edit it there, not here. -->
 ## Shared conventions
@@ -24,11 +26,12 @@ Summary (offline fallback):
   three lines above the code they protect; longer reasoning goes in `docs/`
   with a pointer (`# WHY: docs/x.md#heading`). Never narrate the next line.
 - **Before editing a file**, read its tags:
-  `rg -n '# (WHY|GOTCHA|INVARIANT|SECURITY|UPSTREAM|TODO)' <file>`.
+  `grep -nE '# (WHY|GOTCHA|INVARIANT|SECURITY|UPSTREAM|TODO)' <file>`.
   Fix or delete any tag your change makes untrue.
 - **Exported Nix functions** get RFC 145 doc comments (`/** ... */`).
-- **Validate before committing:** the narrowest `nix build` first, then
-  `nix flake check`; read all output. Run `bash -n`/`shellcheck` on shell
+- **Validate before committing:** build the narrowest affected output
+  first (when the flake has packages), then `nix flake check`; read all
+  output. Run `bash -n`/`shellcheck` on shell
   generated from Nix. Exit code 0 is not proof the change worked.
 - **Same change, same PR:** behaviour changes come with docs and a check.
 - **Never commit secrets**, and do not deploy to or change live hosts unless
